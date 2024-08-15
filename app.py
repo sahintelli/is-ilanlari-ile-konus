@@ -2,7 +2,7 @@ import streamlit as st
 from openai import OpenAI
 
 # Set page configuration
-st.set_page_config(page_title="Page Title", page_icon="🤖")  # Appears on the browser tab
+st.set_page_config(page_title="Is ilanlari ile konusma uygulamasi", page_icon="🤖")  # Appears on the browser tab
 
 def sidebar_setup():
     st.sidebar.header("Setup")  # Set up the sidebar header
