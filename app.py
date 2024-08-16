@@ -144,7 +144,7 @@ def main():
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik basladi: "
       icerik += oku(dosya)
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik bitti. "
-    # st.write(f"Dosya okundu. Icerik: {icerik}")
+    st.write(f"Dosya okundu. Icerik: {icerik}")
     st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
 
     
