@@ -113,7 +113,7 @@ def handle_tool_calls(completion, mesajlar, fonksiyonlarim):
   return mesajlar, tool_calls
 
 def oku(dosya):
-    dosya_yolu = dosya.name
+    dosya_yolu = dosya.upload_url
     if dosya_yolu.endswith(".pdf"):
         icerik = ''
         pdf_reader = PdfReader(dosya_yolu)
@@ -122,8 +122,8 @@ def oku(dosya):
         return icerik
     elif dosya_yolu.endswith(".docx"):
         # icerik = docx2txt.process(dosya)
-        st.write(dosya)
-        doc = Document(dosya.upload_url)
+        st.write(dosya_yolu)
+        doc = Document(dosya_yolu)
         parca = [para.text for para in doc.paragraphs]
         icerik = '\n'.join(parca)
         return icerik
