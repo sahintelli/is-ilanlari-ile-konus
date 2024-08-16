@@ -122,6 +122,7 @@ def oku(dosya):
         return icerik
     elif dosya_yolu.endswith(".docx"):
         icerik = docx2txt.process(dosya)
+        st.write(dosya)
         # doc = Document(dosya_yolu)
         # parca = [para.text for para in doc.paragraphs]
         # icerik = '\n'.join(parca)
