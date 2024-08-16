@@ -146,6 +146,7 @@ def main():
     # st.write(f"Dosya okundu. Icerik: {icerik}")
     st.write(st.session_state)
 
+    st.write(icerik)
     if not icerik:
         st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
         
