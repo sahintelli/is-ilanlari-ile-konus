@@ -149,7 +149,6 @@ def main():
     if not icerik:
         st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
         
-
     
     # If API key and uploaded files are provided, display the file names and types
     if api_key and uploaded_files:
