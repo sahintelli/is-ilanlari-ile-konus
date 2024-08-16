@@ -132,12 +132,22 @@ def main():
     model, stream, api_key, uploaded_files = sidebar_setup()
     client = OpenAI(api_key=api_key)
 
+    if not "mesajlar" in st.session_state:
+        st.session_state.mesajlar = [
+        {"role": "system", "content": "Verilen is ilanlari ile ilgili yardimci bir asistansin."}
+    ]
 
-    if "sayac" in st.session_state:
-        st.session_state.sayac += 1
-    else:
-        st.session_state.sayac = 0
+        
+    icerik = ''
+    for uploaded_file in uploaded_files:
+      icerik += f"Dosya ismi {uploaded_file} icerisindeki icerik basladi: "
+      icerik += oku(uploaded_file)
+      icerik += f"Dosya ismi {uploaded_file} icerisindeki icerik bitti. "
+    st.write(f"Dosya okundu. Icerik: {icerik}")
+    st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
     st.write(st.session_state)
+
+
 
     # If API key and uploaded files are provided, display the file names and types
     if api_key and uploaded_files:
@@ -145,4 +155,74 @@ def main():
             st.write(f"Uploaded file name: {uploaded_file.name}")
 
 if __name__ == "__main__":
+    tools = [
+      {
+        "type": "function",
+        "function": {
+          "name": "is_ilanlarini_filtrele",
+          "description": "Belirli kategorilere gore is ilanlarini filtreler",
+          "parameters": {
+            "type": "object",
+            "properties": {
+              "dosya_adi": {
+                "type": "string",
+                "description": "İş ilanı dosyasının adı",
+              },
+              "ilan_basligi": {
+                "type": "string",
+                "description": "İş ilanının başlığı",
+              },
+              "sirket_adi": {
+                "type": "string",
+                "description": "İş ilanını veren şirketin adı",
+              },
+              "konum": {
+                "type": "string",
+                "description": "İşin konumu, şehir ve ülke bilgisi",
+              },
+              "maas": {
+                "type": "string",
+                "description": "Teklif edilen maaş",
+              },
+              "calisma_sekli": {
+                "type": "string",
+                "enum": ["tam zamanlı", "yarı zamanlı", "uzaktan"],
+                "description": "Çalışma şekli, örn: tam zamanlı, yarı zamanlı, uzaktan",
+              },
+              "nitelikler": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "description": "Pozisyon için gereken nitelikler",
+              },
+              "sorumluluklar": {
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "description": "Pozisyonun sorumlulukları",
+              },
+              "iletisim": {
+                "type": "string",
+                "description": "İş ilanı için iletişim bilgileri",
+              },
+              "son_basvuru_tarihi": {
+                "type": "string",
+                "description": "Son başvuru tarihi",
+              }
+            },
+            "required": ["ilan_basligi", "sirket_adi", "konum", "maas", "calisma_sekli"],
+          },
+        }
+      }
+    ]
+    
+    fonksiyonlarim = {
+        "is_ilanlarini_filtrele": is_ilanlarini_filtrele
+    }
+    
+    tool_choice = "auto"
+    model = "gpt-4o"
+
     main()
