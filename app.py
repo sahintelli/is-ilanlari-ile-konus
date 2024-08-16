@@ -111,15 +111,16 @@ def handle_tool_calls(completion, mesajlar, fonksiyonlarim):
     return mesajlar, tool_calls
   return mesajlar, tool_calls
 
-def oku(dosya_yolu):
+def oku(dosya):
+  dosya_yolu = dosya.name
   if dosya_yolu.endswith(".pdf"):
     icerik = ''
-    pdf_reader = PdfReader(dosya_yolu)
+    pdf_reader = PdfReader(dosya)
     for sayfa in pdf_reader.pages:
         icerik += sayfa.extract_text()
     return icerik
   elif dosya_yolu.endswith(".docx"):
-    doc = Document(dosya_yolu)
+    doc = Document(dosya)
     parca = [para.text for para in doc.paragraphs]
     icerik = '\n'.join(parca)
     return icerik
@@ -139,10 +140,10 @@ def main():
 
     st.write(uploaded_files)
     icerik = ''
-    for dosya_yolu in uploaded_files:
-      icerik += f"Dosya ismi {dosya_yolu} icerisindeki icerik basladi: "
-      icerik += oku(dosya_yolu)
-      icerik += f"Dosya ismi {dosya_yolu} icerisindeki icerik bitti. "
+    for dosya in uploaded_files:
+      icerik += f"Dosya ismi {dosya.name} icerisindeki icerik basladi: "
+      icerik += oku(dosya)
+      icerik += f"Dosya ismi {dosya.name} icerisindeki icerik bitti. "
     # st.write(f"Dosya okundu. Icerik: {icerik}")
     st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
 
