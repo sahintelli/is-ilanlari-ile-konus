@@ -151,6 +151,7 @@ def main():
         pass
     else:
         if not icerik:
+            st.session_state.dosya_icerigi.append(icerik)
             st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
     st.write(st.session_state)
 
