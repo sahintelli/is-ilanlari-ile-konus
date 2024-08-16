@@ -136,7 +136,8 @@ def main():
         st.session_state.mesajlar = [
         {"role": "system", "content": "Verilen is ilanlari ile ilgili yardimci bir asistansin."}
     ]
-    
+
+    st.write(uploaded_files)
     icerik = ''
     for dosya_yolu in uploaded_files:
       icerik += f"Dosya ismi {dosya_yolu} icerisindeki icerik basladi: "
