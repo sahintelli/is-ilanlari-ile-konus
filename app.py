@@ -146,7 +146,7 @@ def main():
     # st.write(f"Dosya okundu. Icerik: {icerik}")
     
     if not "dosya_icerigi" in st.session_state:
-        st.session_state.dosya_icerigi = [icerik]
+        st.session_state.dosya_icerigi = []
     if st.session_state.dosya_icerigi[-1] == icerik:
         pass
     else:
