@@ -147,7 +147,7 @@ def main():
     
     if not "dosya_icerigi" in st.session_state:
         st.session_state.dosya_icerigi = []
-    if st.session_state.dosya_icerigi[-1] == icerik:
+    elif st.session_state.dosya_icerigi[-1] == icerik:
         st.write('bos yada ayni')
         pass
     else:
