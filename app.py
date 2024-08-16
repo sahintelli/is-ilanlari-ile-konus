@@ -3,6 +3,7 @@ from openai import OpenAI
 import json
 from docx import Document
 from PyPDF2 import PdfReader
+import docx2txt
 
 # Set page configuration
 st.set_page_config(page_title="Is ilanlari ile konusma uygulamasi", page_icon="🤖")  # Appears on the browser tab
@@ -120,9 +121,10 @@ def oku(dosya):
             icerik += sayfa.extract_text()
         return icerik
     elif dosya_yolu.endswith(".docx"):
-        doc = Document(dosya_yolu)
-        parca = [para.text for para in doc.paragraphs]
-        icerik = '\n'.join(parca)
+        icerik = docx2txt.process(uploaded_file)
+        # doc = Document(dosya_yolu)
+        # parca = [para.text for para in doc.paragraphs]
+        # icerik = '\n'.join(parca)
         return icerik
 
 
