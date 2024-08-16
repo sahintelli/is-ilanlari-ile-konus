@@ -138,14 +138,14 @@ def main():
         {"role": "system", "content": "Verilen is ilanlari ile ilgili yardimci bir asistansin."}
     ]
 
-    st.write(uploaded_files)
     icerik = ''
     for dosya in uploaded_files:
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik basladi: "
       icerik += oku(dosya)
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik bitti. "
-    st.write(f"Dosya okundu. Icerik: {icerik}")
+    # st.write(f"Dosya okundu. Icerik: {icerik}")
     st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
+    s.write(st.session_state)
 
     
     # If API key and uploaded files are provided, display the file names and types
