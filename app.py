@@ -124,6 +124,7 @@ def oku(dosya_yolu):
     icerik = '\n'.join(parca)
     return icerik
 
+
 def main():
     st.title("Title 🎈")  # Set the app's title
 
@@ -131,10 +132,11 @@ def main():
     model, stream, api_key, uploaded_files = sidebar_setup()
     client = OpenAI(api_key=api_key)
 
+    
     if "sayac" in st.session_state:
         st.session_state.sayac += 1 
     else:
-        st.session_state.sayc = 0
+        st.session_state.sayac = 0
     st.write(st.session_state)
     
     # If API key and uploaded files are provided, display the file names and types
