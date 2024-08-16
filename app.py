@@ -121,7 +121,7 @@ def oku(dosya):
             icerik += sayfa.extract_text()
         return icerik
     elif dosya_yolu.endswith(".docx"):
-        icerik = docx2txt.process(uploaded_file)
+        icerik = docx2txt.process(dosya_yolu)
         # doc = Document(dosya_yolu)
         # parca = [para.text for para in doc.paragraphs]
         # icerik = '\n'.join(parca)
