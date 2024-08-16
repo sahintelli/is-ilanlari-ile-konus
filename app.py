@@ -147,6 +147,8 @@ def main():
 
     if not "dosya_icerigi" in st.session_state:
         st.session_state.dosya_icerigi = []
+        if icerik:
+            st.session_state.dosya_icerigi.append(icerik)
         
     
     if icerik:
