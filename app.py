@@ -149,7 +149,7 @@ def main():
         st.session_state.dosya_icerigi = [icerik]
         
 
-    if st.session_state.dosya_icerigi and st.session_state.dosya_icerigi[-1] != icerik:
+    if "dosya_icerigi" in st.session_state and st.session_state.dosya_icerigi[-1] != icerik:
         st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
         st.session_state.dosya_icerigi.append(icerik)
         
