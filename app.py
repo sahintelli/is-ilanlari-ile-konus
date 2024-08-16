@@ -113,6 +113,7 @@ def handle_tool_calls(completion, mesajlar, fonksiyonlarim):
   return mesajlar, tool_calls
 
 def oku(dosya):
+    st.write(dosya)
     dosya_yolu = dosya.upload_url
     if dosya_yolu.endswith(".pdf"):
         icerik = ''
