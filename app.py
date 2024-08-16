@@ -115,16 +115,16 @@ def oku(dosya_yolu):
     st.write(dosya_yolu)
     st.write(dosya_yolu.name)
     if dosya_yolu.endswith(".pdf"):
-    icerik = ''
-    pdf_reader = PdfReader(dosya_yolu)
-    for sayfa in pdf_reader.pages:
-        icerik += sayfa.extract_text()
-    return icerik
+        icerik = ''
+        pdf_reader = PdfReader(dosya_yolu)
+        for sayfa in pdf_reader.pages:
+            icerik += sayfa.extract_text()
+        return icerik
     elif dosya_yolu.endswith(".docx"):
-    doc = Document(dosya_yolu)
-    parca = [para.text for para in doc.paragraphs]
-    icerik = '\n'.join(parca)
-    return icerik
+        doc = Document(dosya_yolu)
+        parca = [para.text for para in doc.paragraphs]
+        icerik = '\n'.join(parca)
+        return icerik
 
 
 def main():
