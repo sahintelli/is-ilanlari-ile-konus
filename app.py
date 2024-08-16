@@ -145,7 +145,7 @@ def main():
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik bitti. "
     # st.write(f"Dosya okundu. Icerik: {icerik}")
     st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
-    s.write(st.session_state)
+    st.write(st.session_state)
 
     
     # If API key and uploaded files are provided, display the file names and types
