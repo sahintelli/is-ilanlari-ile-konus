@@ -121,11 +121,11 @@ def oku(dosya):
             icerik += sayfa.extract_text()
         return icerik
     elif dosya_yolu.endswith(".docx"):
-        icerik = docx2txt.process(dosya)
+        # icerik = docx2txt.process(dosya)
         st.write(dosya)
-        # doc = Document(dosya_yolu)
-        # parca = [para.text for para in doc.paragraphs]
-        # icerik = '\n'.join(parca)
+        doc = Document(dosya.upload_url)
+        parca = [para.text for para in doc.paragraphs]
+        icerik = '\n'.join(parca)
         return icerik
 
 
