@@ -149,7 +149,11 @@ def main():
     # st.write(f"Dosya okundu. Icerik: {icerik}")
 
 
-    if icerik and st.session_state.dosya_icerigi and st.session_state.dosya_icerigi[-1] != icerik:
+    if icerik and st.session_state.dosya_icerigi:
+        if st.session_state.dosya_icerigi[-1] != icerik:
+            st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
+            st.session_state.dosya_icerigi.append(icerik)
+    elif icerik:
         st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
         st.session_state.dosya_icerigi.append(icerik)
         
