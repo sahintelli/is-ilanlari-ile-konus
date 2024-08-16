@@ -144,10 +144,18 @@ def main():
       icerik += oku(dosya)
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik bitti. "
     # st.write(f"Dosya okundu. Icerik: {icerik}")
-    st.write(st.session_state)
 
+    if not "dosya_icerigi" in st.session_state:
+        st.session_state.dosya_icerigi = []
+        
+    
     if icerik:
         st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
+        if st.session_state.dosya_icerigi[-1] != icerik
+            st.session_state.dosya_icerigi.append(icerik)
+        
+
+    st.write(st.session_state)
         
     # If API key and uploaded files are provided, display the file names and types
     if api_key and uploaded_files:
