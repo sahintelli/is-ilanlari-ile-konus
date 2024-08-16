@@ -137,7 +137,10 @@ def main():
         st.session_state.mesajlar = [
         {"role": "system", "content": "Verilen is ilanlari ile ilgili yardimci bir asistansin."}
     ]
-
+        
+    if not "dosya_icerigi" in st.session_state:
+        st.session_state.dosya_icerigi = []
+        
     icerik = ''
     for dosya in uploaded_files:
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik basladi: "
@@ -145,11 +148,8 @@ def main():
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik bitti. "
     # st.write(f"Dosya okundu. Icerik: {icerik}")
 
-    if icerik and not "dosya_icerigi" in st.session_state:
-        st.session_state.dosya_icerigi = [icerik]
-        
 
-    if "dosya_icerigi" in st.session_state and st.session_state.dosya_icerigi[-1] != icerik:
+    if icerik and st.session_state.dosya_icerigi and st.session_state.dosya_icerigi[-1] != icerik:
         st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
         st.session_state.dosya_icerigi.append(icerik)
         
