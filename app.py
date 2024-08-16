@@ -146,11 +146,9 @@ def main():
     # st.write(f"Dosya okundu. Icerik: {icerik}")
 
     if not "dosya_icerigi" in st.session_state:
-        st.session_state.dosya_icerigi = []
-        if icerik:
-            st.session_state.dosya_icerigi.append(icerik)
+        st.session_state.dosya_icerigi = [icerik]
         
-    
+
     if icerik:
         st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
         if st.session_state.dosya_icerigi and st.session_state.dosya_icerigi[-1] != icerik:
