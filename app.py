@@ -114,7 +114,7 @@ def handle_tool_calls(completion, mesajlar, fonksiyonlarim):
 
 def oku(dosya):
     st.write(dosya)
-    dosya_yolu = dosya.upload_url
+    dosya_yolu = dosya['upload_url']
     if dosya_yolu.endswith(".pdf"):
         icerik = ''
         pdf_reader = PdfReader(dosya_yolu)
