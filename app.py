@@ -111,9 +111,8 @@ def handle_tool_calls(completion, mesajlar, fonksiyonlarim):
     return mesajlar, tool_calls
   return mesajlar, tool_calls
 
-def oku(dosya_yolu):
-    st.write(dosya_yolu)
-    st.write(dosya_yolu.name)
+def oku(dosya):
+    dosya_yolu = dosya.name
     if dosya_yolu.endswith(".pdf"):
         icerik = ''
         pdf_reader = PdfReader(dosya_yolu)
