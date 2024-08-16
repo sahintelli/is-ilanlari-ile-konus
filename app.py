@@ -44,7 +44,9 @@ def main():
     # Setup the sidebar
     model, stream, api_key, uploaded_files = sidebar_setup()
 
-    st.write(st.session_state)
+    if not "sayac" in st.session_state:
+        st.session_state.sayac = 0
+        st.write(st.session_state)
 
     # If API key and uploaded files are provided, display the file names and types
     if api_key and uploaded_files:
