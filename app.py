@@ -12,11 +12,11 @@ def sidebar_setup():
 
     # Define available models in a dictionary
     available_models = {
-        "GPT-3.5 Turbo": "gpt-3.5-turbo", 
-        "GPT-4": "gpt-4", 
+        "GPT-3.5 Turbo": "gpt-3.5-turbo",
+        "GPT-4": "gpt-4",
         "GPT-4o": "gpt-4o"
     }
-    
+
     # Provide a dropdown for the user to select an OpenAI model
     model_selection = st.sidebar.selectbox("Select an OpenAI Model", available_models.keys())
     model = available_models.get(model_selection)  # Get the value of the selected model
@@ -34,7 +34,7 @@ def sidebar_setup():
     # Handle file upload
     uploaded_files = st.sidebar.file_uploader("Upload files", accept_multiple_files=accept_multiple_files, type=["pdf", "docx"])
     # uploaded_files = st.sidebar.file_uploader("Upload CSV or XLSX File", accept_multiple_files=accept_multiple_files, type=['csv', 'xlsx'])
-    
+
     # Ensure `uploaded_files` is always a list
     uploaded_files = [uploaded_files] if uploaded_files and not accept_multiple_files else uploaded_files
 
@@ -137,29 +137,18 @@ def main():
         st.session_state.mesajlar = [
         {"role": "system", "content": "Verilen is ilanlari ile ilgili yardimci bir asistansin."}
     ]
-        
-    if not "dosya_icerigi" in st.session_state:
-        st.session_state.dosya_icerigi = []
-        
+
     icerik = ''
     for dosya in uploaded_files:
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik basladi: "
       icerik += oku(dosya)
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik bitti. "
     # st.write(f"Dosya okundu. Icerik: {icerik}")
-
-
-    if icerik and st.session_state.dosya_icerigi:
-        if st.session_state.dosya_icerigi[-1] != icerik:
-            st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
-            st.session_state.dosya_icerigi.append(icerik)
-    elif icerik:
-        st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
-        st.session_state.dosya_icerigi.append(icerik)
-        
-
     st.write(st.session_state)
-        
+
+    if icerik:
+        st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
+
     # If API key and uploaded files are provided, display the file names and types
     if api_key and uploaded_files:
         for uploaded_file in uploaded_files:
@@ -228,11 +217,11 @@ if __name__ == "__main__":
         }
       }
     ]
-    
+
     fonksiyonlarim = {
         "is_ilanlarini_filtrele": is_ilanlarini_filtrele
     }
-    
+
     tool_choice = "auto"
     model = "gpt-4o"
     main()
