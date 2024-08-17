@@ -138,6 +138,9 @@ def main():
         {"role": "system", "content": "Verilen is ilanlari ile ilgili yardimci bir asistansin."}
     ]
 
+    if not "dosya_icerigi" in st.session_state:
+        st.session_state.dosya_icerigi = []
+    
     icerik = ''
     for dosya in uploaded_files:
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik basladi: "
@@ -146,8 +149,9 @@ def main():
     # st.write(f"Dosya okundu. Icerik: {icerik}")
     st.write(st.session_state)
 
-    if icerik:
+    if icerik and st.session_state.dosya_icerigi[-1]!=icerik:
         st.session_state.mesajlar.append({"role": "user", "content": f"Dosya icerigi: {icerik}"})
+        st.session_state.dosya_icerigi.append(icerik)
 
     # If API key and uploaded files are provided, display the file names and types
     if api_key and uploaded_files:
