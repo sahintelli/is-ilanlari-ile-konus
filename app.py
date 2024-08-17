@@ -158,8 +158,14 @@ def main():
     if api_key and uploaded_files:
         for uploaded_file in uploaded_files:
             st.write(f"Uploaded file name: {uploaded_file.name}")
+        
         if prompt := st.chat_input("Prompt'u giriniz ..."):
             st.write(f"Girilen prompt: {prompt}")
+            st.session_state.mesajlar.append({"role": "user", "content": prompt})
+            # completion = istek_gonder(model, mesajlar, tools, tool_choice)
+
+            st.write("AI: haha")
+
 
 if __name__ == "__main__":
     tools = [
