@@ -160,11 +160,13 @@ def main():
             st.write(f"Uploaded file name: {uploaded_file.name}")
         
         if prompt := st.chat_input("Prompt'u giriniz ..."):
-            st.write(f"Girilen prompt: {prompt}")
             st.session_state.mesajlar.append({"role": "user", "content": prompt})
-            # completion = istek_gonder(model, mesajlar, tools, tool_choice)
-
-            st.write("AI: haha")
+            with st.chat_message("user"):
+                st.markdown(prompt)
+            
+            with st.chat_message("assistant"):
+                # completion = istek_gonder(model, mesajlar, tools, tool_choice)
+                st.markdown("AI: haha")
 
 
 if __name__ == "__main__":
