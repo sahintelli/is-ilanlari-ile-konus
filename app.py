@@ -115,7 +115,7 @@ def handle_tool_calls(fonksiyonlarim):
           "name": f_ismi,
           "content": results
       })
-    return handle_tool_calls()
+    return handle_tool_calls(fonksiyonlarim)
   return completion.choices[0].message.content
 
 def oku(dosya):
