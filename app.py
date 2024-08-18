@@ -187,7 +187,7 @@ def main():
             elif message["content"].startswith("Dosya icerigi: Dosya ismi"):
                 pass
             else:
-                with st.sidebar.expander(message["role"])
+                with st.sidebar.expander(message["role"]):
                     st.sidebar.write(message)
 
 if __name__ == "__main__":
