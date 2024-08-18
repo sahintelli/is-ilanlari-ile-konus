@@ -190,6 +190,14 @@ def main():
                 with st.sidebar.expander(message["role"]):
                     st.write(message["content"])
 
+# 1 - Sistem mesajında işlem başarılı cevabı gelip gelmemesine göre yönlendir.
+# 2 - Alternatif olarak, yapay zeka modeline parametreleri geri döndür.
+# 3 - Sidebar'a listeleme kriterleri ekle (tools fonksiyonu parametreleri).
+# 4 - Dinamik olarak seçili arama kriterlerine göre tool değişkeni oluştur.
+# 5 - Stream özelliğini aktifleştir.
+# 6 - Hata yakalama özelliği ekle.
+# 7 - Streamlit Cloud üzerinde yayınlama ve st.secrets.
+    
 if __name__ == "__main__":
     tools = [
       {
