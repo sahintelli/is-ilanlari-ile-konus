@@ -174,9 +174,9 @@ def main():
             with st.chat_message("user"):
                 st.markdown(prompt)
             
-            with st.chat_message("assistant"):
-                mesaj = handle_tool_calls(fonksiyonlarim)
-                st.markdown(mesaj)  
+            # with st.chat_message("assistant"):
+            #     mesaj = handle_tool_calls(fonksiyonlarim)
+            #     st.markdown(mesaj)  
 
 
 if __name__ == "__main__":
