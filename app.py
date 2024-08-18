@@ -157,7 +157,6 @@ def main():
       icerik += oku(dosya)
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik bitti. "
     # st.write(f"Dosya okundu. Icerik: {icerik}")
-    st.write(st.session_state)
 
     if icerik:
         if not st.session_state.dosya_icerigi or st.session_state.dosya_icerigi[-1]!=icerik:
@@ -178,6 +177,11 @@ def main():
                 cevap = handle_tool_calls(fonksiyonlarim)
                 st.session_state.mesajlar.append({"role": "assistant", "content": cevap})
                 st.markdown(cevap)
+
+      st.sidebar.header("Chat gecmisi")
+      for message in st.session_state.mesajlar:
+          if message["role"] == user or message["role"] == assistant:
+              st.sidebar.write(message)
 
 
 if __name__ == "__main__":
