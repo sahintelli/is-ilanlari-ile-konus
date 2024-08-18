@@ -41,13 +41,7 @@ def sidebar_setup():
     # Return the selected model, stream setting, API key, and uploaded files
     return model, stream, api_key, uploaded_files
 
-def istek_gonder():
-  model = st.session_state.model
-  mesajlar = st.session_state.mesajlar
-  tools = st.session_state.tools
-  tool_choice = st.session_state.tool_choice
-  client = st.session_state.client
-
+def istek_gonder(model, mesajlar, tools, tool_choice="auto"):
   completion = client.chat.completions.create(
     model=model,
     messages=mesajlar,
@@ -95,28 +89,27 @@ def is_ilanlarini_filtrele(**kwargs):
 
   return "Islem basarili"
 
-def handle_tool_calls(fonksiyonlarim):
-  completion = istek_gonder()
+def handle_tool_calls(completion, mesajlar, fonksiyonlarim):
   tool_calls = completion.choices[0].message.tool_calls
   # st.write(f"AI (tool_calls): {tool_calls}")
   if tool_calls:
     fonksiyon_sayisi = len(tool_calls)
     # mesajlar.append(completion.choices[0].message)
-    st.session_state.mesajlar.append({"role": "assistant", "tool_calls": completion.choices[0].message.tool_calls})
+    mesajlar.append({"role": "assistant", "tool_calls": completion.choices[0].message.tool_calls})
     for i in range(fonksiyon_sayisi):
       f_id = completion.choices[0].message.tool_calls[i].id
       f_ismi = completion.choices[0].message.tool_calls[i].function.name
       f_args = json.loads(completion.choices[0].message.tool_calls[i].function.arguments)
       results = json.dumps(fonksiyonlarim[f_ismi](**f_args))
-      st.sidebar.write(f"Fonksiyon id: {f_id} - isim: {f_ismi} - parametreler: {f_args} - sonuc: {results}")
-      st.session_state.mesajlar.append({
+      st.write(f"Fonksiyon id: {f_id} - isim: {f_ismi} - parametreler: {f_args} - sonuc: {results}")
+      mesajlar.append({
           "role": "tool",
           "tool_call_id": f_id,
           "name": f_ismi,
           "content": results
       })
-    return handle_tool_calls(fonksiyonlarim)
-  return completion.choices[0].message.content
+    return mesajlar, tool_calls
+  return mesajlar, tool_calls
 
 def oku(dosya):
   dosya_yolu = dosya.name
@@ -138,10 +131,7 @@ def main():
 
     # Setup the sidebar
     model, stream, api_key, uploaded_files = sidebar_setup()
-    st.session_state.model = model
-
     client = OpenAI(api_key=api_key)
-    st.session_state.client = client
 
     if not "mesajlar" in st.session_state:
         st.session_state.mesajlar = [
@@ -150,7 +140,7 @@ def main():
 
     if not "dosya_icerigi" in st.session_state:
         st.session_state.dosya_icerigi = []
-    
+
     icerik = ''
     for dosya in uploaded_files:
       icerik += f"Dosya ismi {dosya.name} icerisindeki icerik basladi: "
@@ -168,16 +158,15 @@ def main():
     if api_key and uploaded_files:
         for uploaded_file in uploaded_files:
             st.write(f"Uploaded file name: {uploaded_file.name}")
-        
+
         if prompt := st.chat_input("Prompt'u giriniz ..."):
             st.session_state.mesajlar.append({"role": "user", "content": prompt})
             with st.chat_message("user"):
                 st.markdown(prompt)
-            
+
             with st.chat_message("assistant"):
-                mesaj = handle_tool_calls(fonksiyonlarim)
-                st.session_state.mesajlar.append({"role": "assistant", "content": mesaj})
-                st.markdown(mesaj)  
+                # completion = istek_gonder(model, mesajlar, tools, tool_choice)
+                st.markdown("AI: haha")
 
 
 if __name__ == "__main__":
@@ -247,7 +236,7 @@ if __name__ == "__main__":
     fonksiyonlarim = {
         "is_ilanlarini_filtrele": is_ilanlarini_filtrele
     }
-    st.session_state.tools = tools
-    st.session_state.tool_choice = "auto"
 
+    tool_choice = "auto"
+    model = "gpt-4o"
     main()
