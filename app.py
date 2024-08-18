@@ -176,6 +176,7 @@ def main():
             
             with st.chat_message("assistant"):
                 mesaj = handle_tool_calls(fonksiyonlarim)
+                st.session_state.mesajlar.append({"role": "assistant", "content": mesaj})
                 st.markdown(mesaj)  
 
 
