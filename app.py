@@ -188,7 +188,7 @@ def main():
                 pass
             else:
                 with st.sidebar.expander(message["role"]):
-                    st.write(message)
+                    st.write(message["content"])
 
 if __name__ == "__main__":
     tools = [
