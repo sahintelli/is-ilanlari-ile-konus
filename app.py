@@ -178,10 +178,11 @@ def main():
                 st.session_state.mesajlar.append({"role": "assistant", "content": cevap})
                 st.markdown(cevap)
 
-      st.sidebar.header("Chat gecmisi")
-      for message in st.session_state.mesajlar:
-          if message["role"] == user or message["role"] == assistant:
-              st.sidebar.write(message)
+
+    st.sidebar.header("Chat gecmisi")
+    for message in st.session_state.mesajlar:
+        if message["role"] == user or message["role"] == assistant:
+            st.sidebar.write(message)
 
 
 if __name__ == "__main__":
