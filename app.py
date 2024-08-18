@@ -181,7 +181,7 @@ def main():
 
     st.sidebar.header("Chat gecmisi")
     for message in st.session_state.mesajlar:
-        if message["role"] == user or message["role"] == assistant:
+        if message["role"] == "user" or message["role"] == "assistant":
             st.sidebar.write(message)
 
 
