@@ -107,7 +107,8 @@ def handle_tool_calls(fonksiyonlarim):
       f_id = completion.choices[0].message.tool_calls[i].id
       f_ismi = completion.choices[0].message.tool_calls[i].function.name
       f_args = json.loads(completion.choices[0].message.tool_calls[i].function.arguments)
-      results = json.dumps(fonksiyonlarim[f_ismi](**f_args))
+      results = completion.choices[0].message.tool_calls[i].function.arguments
+      # results = json.dumps(fonksiyonlarim[f_ismi](**f_args))
       st.sidebar.write(f"Fonksiyon id: {f_id} - isim: {f_ismi} - parametreler: {f_args} - sonuc: {results}")
       st.session_state.mesajlar.append({
           "role": "tool",
