@@ -24,6 +24,10 @@ def sidebar_setup():
     # Option to enable or disable streaming
     stream = st.sidebar.checkbox("Enable Stream", value=True)
 
+    kategoriler = ["Dosya ismi", "Maas", "Calisma Yeri", "Ilan Basligi"]
+    secilen_kategoriler = st.sidebar.multiselect("Asagidakilerden kategorilerden seciniz: ", kategoriler, default = ["Dosya ismi"])
+    st.sidebar.write(secilen_kategoriler)
+
     # Input field for the OpenAI API key
     api_key = st.sidebar.text_input(label="Your OpenAI API key:", type="password")
     # If your key is stored in secrets, uncomment the line below and comment out the above line
