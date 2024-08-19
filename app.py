@@ -107,8 +107,7 @@ def handle_tool_calls(fonksiyonlarim):
       f_id = completion.choices[0].message.tool_calls[i].id
       f_ismi = completion.choices[0].message.tool_calls[i].function.name
       f_args = json.loads(completion.choices[0].message.tool_calls[i].function.arguments)
-      results = completion.choices[0].message.tool_calls[i].function.arguments
-      # results = json.dumps(fonksiyonlarim[f_ismi](**f_args))
+      results = json.dumps(fonksiyonlarim[f_ismi](**f_args))
       st.sidebar.write(f"Fonksiyon id: {f_id} - isim: {f_ismi} - parametreler: {f_args} - sonuc: {results}")
       st.session_state.mesajlar.append({
           "role": "tool",
@@ -140,17 +139,16 @@ def main():
     # Setup the sidebar
     model, stream, api_key, uploaded_files = sidebar_setup()
     st.session_state.model = model
-    
+
     client = OpenAI(api_key=api_key)
     st.session_state.client = client
 
     if not "mesajlar" in st.session_state:
         st.session_state.mesajlar = [
         {"role": "system", "content": """
-        Verilen is ilanlari ile ilgili yardimci bir asistansin. 
-        Is ilanlari ile ilgili sorularda yapilandirilmis cevaplar ver. Ilan ismi, maas, calisma yeri vs gibi bilgileri alt alta markdown formatinda yazdir. 
-        Eger dosyada olmayan bir bilgi hakinda soru soruluyorsa herhangi bir varsayimda bulunma. 
-        Eger secilen fonksiyon ve parametreler sonucu islem basarili cevabi geldiyse, bu istenen is ilaninin kullaniciya basariyla gosterildigi anlamina gelir.
+        Verilen is ilanlari ile ilgili yardimci bir asistansin.
+        Is ilanlari ile ilgili elde edilen sonuclari yapilandirilmis formatta, yani alt alta belirli kategorilere gore markdown formatinda yazdir.
+        Islem basarili ifadesi, istenen ilanla ilgili sonnucun ekrana basarili bir sekilde yazdirildigi anlamina gelir.
         """}
     ]
 
@@ -203,7 +201,7 @@ def main():
 # 5 - Stream özelliğini aktifleştir.
 # 6 - Hata yakalama özelliği ekle.
 # 7 - Streamlit Cloud üzerinde yayınlama ve st.secrets.
-    
+
 if __name__ == "__main__":
     tools = [
       {
@@ -272,6 +270,6 @@ if __name__ == "__main__":
         "is_ilanlarini_filtrele": is_ilanlarini_filtrele
     }
 
-    st.session_state.tools = tools    
+    st.session_state.tools = tools
     st.session_state.tool_choice = "auto"
     main()
