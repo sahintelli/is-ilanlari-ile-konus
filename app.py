@@ -145,7 +145,11 @@ def main():
 
     if not "mesajlar" in st.session_state:
         st.session_state.mesajlar = [
-        {"role": "system", "content": "Verilen is ilanlari ile ilgili yardimci bir asistansin."}
+        {"role": "system", "content": """
+        Verilen is ilanlari ile ilgili yardimci bir asistansin. 
+        Eger dosyada olmayan bir bilgi hakinda soru soruluyorsa herhangi bir varsayimda bulunma. 
+        Eger secilen fonksiyon ve parametreler sonucu islem basarili cevabi geldiyse, bu istenen is ilaninin kullaniciya basariyla gosterildigi anlamina gelir.
+        """}
     ]
 
     if not "dosya_icerigi" in st.session_state:
