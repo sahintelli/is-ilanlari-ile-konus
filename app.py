@@ -147,6 +147,7 @@ def main():
         st.session_state.mesajlar = [
         {"role": "system", "content": """
         Verilen is ilanlari ile ilgili yardimci bir asistansin. 
+        Is ilanlari ile ilgili sorularda yapilandirilmis cevaplar ver. 
         Eger dosyada olmayan bir bilgi hakinda soru soruluyorsa herhangi bir varsayimda bulunma. 
         Eger secilen fonksiyon ve parametreler sonucu islem basarili cevabi geldiyse, bu istenen is ilaninin kullaniciya basariyla gosterildigi anlamina gelir.
         """}
