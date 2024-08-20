@@ -138,15 +138,20 @@ def oku(dosya):
 
 def tools_olusturucu(secilen_kategoriler):
     properties = {}
+    required = []
     for kategori in secilen_kategoriler:
         if kategori == "Dosya ismi":
             properties['dosya_adi'] = {"type": "string", "description": "İş ilanı dosyasının adı"} 
+            required.append('dosya_adi')
         if kategori == "Maas":
             properties['maas'] = {"type": "string", "description": "Teklif edilen maaş"} 
+            required.append('maas')
         if kategori == "Calisma Yeri":
             properties['konum'] = {"type": "string", "description": "İşin konumu, şehir ve ülke bilgisi"} 
+            required.append('konum')
         if kategori == "Ilan Basligi":
             properties['ilan_basligi'] = {"type": "string", "description": "İş ilanının başlığı"} 
+            required.append('ilan_basligi')
     
     
     tools = [
@@ -231,9 +236,12 @@ def main():
     model, stream, secilen_kategoriler, api_key, uploaded_files = sidebar_setup()
     tools = tools_olusturucu(secilen_kategoriler)
     st.write(tools)
-    # st.session_state.tools = tools
+    st.session_state.tools = tools
     st.session_state.tool_choice = "auto"
-    
+    fonksiyonlarim = {
+        "is_ilanlarini_filtrele": is_ilanlarini_filtrele
+    }
+
     st.session_state.model = model
 
     client = OpenAI(api_key=api_key)
@@ -299,72 +307,4 @@ def main():
 # 7 - Streamlit Cloud üzerinde yayınlama ve st.secrets.
 
 if __name__ == "__main__":
-    tools = [
-      {
-        "type": "function",
-        "function": {
-          "name": "is_ilanlarini_filtrele",
-          "description": "Belirli kategorilere gore is ilanlarini filtreler",
-          "parameters": {
-            "type": "object",
-            "properties": {
-              "dosya_adi": {
-                "type": "string",
-                "description": "İş ilanı dosyasının adı",
-              },
-              "ilan_basligi": {
-                "type": "string",
-                "description": "İş ilanının başlığı",
-              },
-              "sirket_adi": {
-                "type": "string",
-                "description": "İş ilanını veren şirketin adı",
-              },
-              "konum": {
-                "type": "string",
-                "description": "İşin konumu, şehir ve ülke bilgisi",
-              },
-              "maas": {
-                "type": "string",
-                "description": "Teklif edilen maaş",
-              },
-              "calisma_sekli": {
-                "type": "string",
-                "enum": ["tam zamanlı", "yarı zamanlı", "uzaktan"],
-                "description": "Çalışma şekli, örn: tam zamanlı, yarı zamanlı, uzaktan",
-              },
-              "nitelikler": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                },
-                "description": "Pozisyon için gereken nitelikler",
-              },
-              "sorumluluklar": {
-                "type": "array",
-                "items": {
-                    "type": "string"
-                },
-                "description": "Pozisyonun sorumlulukları",
-              },
-              "iletisim": {
-                "type": "string",
-                "description": "İş ilanı için iletişim bilgileri",
-              },
-              "son_basvuru_tarihi": {
-                "type": "string",
-                "description": "Son başvuru tarihi",
-              }
-            },
-            "required": ["ilan_basligi", "sirket_adi", "konum", "maas", "calisma_sekli"],
-          },
-        }
-      }
-    ]
-    st.session_state.tools = tools
-
-    fonksiyonlarim = {
-        "is_ilanlarini_filtrele": is_ilanlarini_filtrele
-    }
-
     main()
