@@ -193,7 +193,6 @@ def main():
     # Setup the sidebar
     model, stream, secilen_kategoriler, api_key, uploaded_files = sidebar_setup()
     tools = tools_olusturucu(secilen_kategoriler)
-    st.write(tools)
     st.session_state.tools = tools
     st.session_state.tool_choice = "auto"
     fonksiyonlarim = {
