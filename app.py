@@ -24,8 +24,8 @@ def sidebar_setup():
     # Option to enable or disable streaming
     stream = st.sidebar.checkbox("Enable Stream", value=True)
 
-    kategoriler = ["Dosya ismi", "Maas", "Calisma Yeri", "Ilan Basligi"]
-    secilen_kategoriler = st.sidebar.multiselect("Asagidakilerden kategorilerden seciniz: ", kategoriler, default = ["Dosya ismi"])
+    kategoriler = ["Dosya ismi", "Maas", "Calisma Yeri", "Ilan Basligi", "Sirket Adi", "Calisma Sekli", "Nitelikler", "Sorumluluklar", "Iletisim", "Son Basvuru Tarihi"]
+    secilen_kategoriler = st.sidebar.multiselect("Asagidakilerden kategorilerden seciniz: ", kategoriler, default = ["Dosya ismi", "Calisma Yeri"])
 
     # Input field for the OpenAI API key
     api_key = st.sidebar.text_input(label="Your OpenAI API key:", type="password")
@@ -143,17 +143,34 @@ def tools_olusturucu(secilen_kategoriler):
         if kategori == "Dosya ismi":
             properties['dosya_adi'] = {"type": "string", "description": "İş ilanı dosyasının adı"} 
             required.append('dosya_adi')
-        if kategori == "Maas":
+        elif kategori == "Maas":
             properties['maas'] = {"type": "string", "description": "Teklif edilen maaş"} 
             required.append('maas')
-        if kategori == "Calisma Yeri":
+        elif kategori == "Calisma Yeri":
             properties['konum'] = {"type": "string", "description": "İşin konumu, şehir ve ülke bilgisi"} 
             required.append('konum')
-        if kategori == "Ilan Basligi":
+        elif kategori == "Ilan Basligi":
             properties['ilan_basligi'] = {"type": "string", "description": "İş ilanının başlığı"} 
             required.append('ilan_basligi')
-    
-    
+        elif kategori == "Sirket Adi":
+            properties['sirket_adi'] = {"type": "string", "description": "İş ilanını veren şirketin adı"} 
+            required.append('sirket_adi')
+        elif kategori == "Calisma Sekli":
+            properties['calisma_sekli'] = {"type": "string", "enum": ["tam zamanlı", "yarı zamanlı", "uzaktan"], "description": "Çalışma şekli, örn: tam zamanlı, yarı zamanlı, uzaktan"} 
+            required.append('calisma_sekli')
+        elif kategori == "Nitelikler":
+            properties['nitelikler'] = {"type": "array", "items": {"type": "string"}, "description": "Pozisyon için gereken nitelikler"} 
+            required.append('nitelikler')
+        elif kategori == "Sorumluluklar":
+            properties['sorumluluklar'] = {"type": "array", "items": {"type": "string"}, "description": "Pozisyonun sorumlulukları"} 
+            required.append('sorumluluklar')
+        elif kategori == "Iletisim":
+            properties['iletisim'] = {"type": "string", "description": "İş ilanı için iletişim bilgileri"} 
+            required.append('iletisim')
+        elif kategori == "Son Basvuru Tarihi":
+            properties['son_basvuru_tarihi'] = {"type": "string", "description": "Son başvuru tarihi"} 
+            required.append('son_basvuru_tarihi')
+        
     tools = [
       {
         "type": "function",
@@ -168,66 +185,7 @@ def tools_olusturucu(secilen_kategoriler):
         }
       }
     ]
-              
-              
-    #                       {
-    #           "dosya_adi": {
-    #             "type": "string",
-    #             "description": "İş ilanı dosyasının adı",
-    #           },
-    #           "ilan_basligi": {
-    #             "type": "string",
-    #             "description": "İş ilanının başlığı",
-    #           },
-    #           "sirket_adi": {
-    #             "type": "string",
-    #             "description": "İş ilanını veren şirketin adı",
-    #           },
-    #           "konum": {
-    #             "type": "string",
-    #             "description": "İşin konumu, şehir ve ülke bilgisi",
-    #           },
-    #           "maas": {
-    #             "type": "string",
-    #             "description": "Teklif edilen maaş",
-    #           },
-    #           "calisma_sekli": {
-    #             "type": "string",
-    #             "enum": ["tam zamanlı", "yarı zamanlı", "uzaktan"],
-    #             "description": "Çalışma şekli, örn: tam zamanlı, yarı zamanlı, uzaktan",
-    #           },
-    #           "nitelikler": {
-    #             "type": "array",
-    #             "items": {
-    #                 "type": "string"
-    #             },
-    #             "description": "Pozisyon için gereken nitelikler",
-    #           },
-    #           "sorumluluklar": {
-    #             "type": "array",
-    #             "items": {
-    #                 "type": "string"
-    #             },
-    #             "description": "Pozisyonun sorumlulukları",
-    #           },
-    #           "iletisim": {
-    #             "type": "string",
-    #             "description": "İş ilanı için iletişim bilgileri",
-    #           },
-    #           "son_basvuru_tarihi": {
-    #             "type": "string",
-    #             "description": "Son başvuru tarihi",
-    #           }
-    #         },
-    #         "required": ["ilan_basligi", "sirket_adi", "konum", "maas", "calisma_sekli"],
-    #       },
-    #     }
-    #   }
-    # ]
-
     return tools
-
-    
 
 def main():
     st.title("Title 🎈")  # Set the app's title
