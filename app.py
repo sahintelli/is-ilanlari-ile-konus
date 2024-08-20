@@ -163,7 +163,7 @@ def tools_olusturucu(secilen_kategoriler):
           "parameters": {
             "type": "object",
             "properties": properties,
-            "required": secilen_kategoriler,
+            "required": required,
           },
         }
       }
