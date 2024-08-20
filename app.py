@@ -26,7 +26,6 @@ def sidebar_setup():
 
     kategoriler = ["Dosya ismi", "Maas", "Calisma Yeri", "Ilan Basligi"]
     secilen_kategoriler = st.sidebar.multiselect("Asagidakilerden kategorilerden seciniz: ", kategoriler, default = ["Dosya ismi"])
-    st.sidebar.write(secilen_kategoriler)
 
     # Input field for the OpenAI API key
     api_key = st.sidebar.text_input(label="Your OpenAI API key:", type="password")
@@ -43,7 +42,7 @@ def sidebar_setup():
     uploaded_files = [uploaded_files] if uploaded_files and not accept_multiple_files else uploaded_files
 
     # Return the selected model, stream setting, API key, and uploaded files
-    return model, stream, api_key, uploaded_files
+    return model, stream, secilen_kategoriler, api_key, uploaded_files
 
 def istek_gonder():
   model = st.session_state.model
@@ -137,12 +136,104 @@ def oku(dosya):
     icerik = '\n'.join(parca)
     return icerik
 
+def tools_olusturucu(secilen_kategoriler):
+    properties = {}
+    for kategori in secilen_kategoriler:
+        if kategori == "Dosya ismi":
+            properties['dosya_adi'] = {"type": "string", "description": "İş ilanı dosyasının adı"} 
+        if kategori == "Maas":
+            properties['maas'] = {"type": "string", "description": "Teklif edilen maaş"} 
+        if kategori == "Calisma Yeri":
+            properties['konum'] = {"type": "string", "description": "İşin konumu, şehir ve ülke bilgisi"} 
+        if kategori == "Ilan Basligi":
+            properties['ilan_basligi'] = {"type": "string", "description": "İş ilanının başlığı"} 
+    
+    
+    tools = [
+      {
+        "type": "function",
+        "function": {
+          "name": "is_ilanlarini_filtrele",
+          "description": "Belirli kategorilere gore is ilanlarini filtreler",
+          "parameters": {
+            "type": "object",
+            "properties": properties,
+            "required": secilen_kategoriler,
+          },
+        }
+      }
+    ]
+              
+              
+    #                       {
+    #           "dosya_adi": {
+    #             "type": "string",
+    #             "description": "İş ilanı dosyasının adı",
+    #           },
+    #           "ilan_basligi": {
+    #             "type": "string",
+    #             "description": "İş ilanının başlığı",
+    #           },
+    #           "sirket_adi": {
+    #             "type": "string",
+    #             "description": "İş ilanını veren şirketin adı",
+    #           },
+    #           "konum": {
+    #             "type": "string",
+    #             "description": "İşin konumu, şehir ve ülke bilgisi",
+    #           },
+    #           "maas": {
+    #             "type": "string",
+    #             "description": "Teklif edilen maaş",
+    #           },
+    #           "calisma_sekli": {
+    #             "type": "string",
+    #             "enum": ["tam zamanlı", "yarı zamanlı", "uzaktan"],
+    #             "description": "Çalışma şekli, örn: tam zamanlı, yarı zamanlı, uzaktan",
+    #           },
+    #           "nitelikler": {
+    #             "type": "array",
+    #             "items": {
+    #                 "type": "string"
+    #             },
+    #             "description": "Pozisyon için gereken nitelikler",
+    #           },
+    #           "sorumluluklar": {
+    #             "type": "array",
+    #             "items": {
+    #                 "type": "string"
+    #             },
+    #             "description": "Pozisyonun sorumlulukları",
+    #           },
+    #           "iletisim": {
+    #             "type": "string",
+    #             "description": "İş ilanı için iletişim bilgileri",
+    #           },
+    #           "son_basvuru_tarihi": {
+    #             "type": "string",
+    #             "description": "Son başvuru tarihi",
+    #           }
+    #         },
+    #         "required": ["ilan_basligi", "sirket_adi", "konum", "maas", "calisma_sekli"],
+    #       },
+    #     }
+    #   }
+    # ]
+
+    return tools
+
+    
 
 def main():
     st.title("Title 🎈")  # Set the app's title
 
     # Setup the sidebar
-    model, stream, api_key, uploaded_files = sidebar_setup()
+    model, stream, secilen_kategoriler, api_key, uploaded_files = sidebar_setup()
+    tools = tools_olusturucu(secilen_kategoriler)
+    st.write(tools)
+    # st.session_state.tools = tools
+    st.session_state.tool_choice = "auto"
+    
     st.session_state.model = model
 
     client = OpenAI(api_key=api_key)
@@ -270,11 +361,10 @@ if __name__ == "__main__":
         }
       }
     ]
+    st.session_state.tools = tools
 
     fonksiyonlarim = {
         "is_ilanlarini_filtrele": is_ilanlarini_filtrele
     }
 
-    st.session_state.tools = tools
-    st.session_state.tool_choice = "auto"
     main()
