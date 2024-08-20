@@ -72,29 +72,29 @@ def is_ilanlarini_filtrele(**kwargs):
   son_basvuru_tarihi = kwargs.get('son_basvuru_tarihi', None)
 
   if dosya_adi:
-    st.write(f"Ilanin bulundugu dosya ismi: {dosya_adi}.")
+    st.markdown(f"Ilanin bulundugu dosya ismi: {dosya_adi}.")
   if ilan_basligi:
-    st.write(f"{ilan_basligi}")
+    st.markdown(f"*{ilan_basligi}*")
   if sirket_adi:
-    st.write(f"Ilani veren sirket: {sirket_adi}.")
+    st.markdown(f"**Ilani veren sirket: {sirket_adi}.**")
   if konum:
-    st.write(f"Is konumu: {konum}.")
+    st.markdown(f"Is konumu: {konum}.")
   if maas:
-    st.write(f"Maas: {maas}.")
+    st.markdown(f"Maas: {maas}.")
   if calisma_sekli:
-    st.write(f"Calisma sekli: {calisma_sekli}.")
+    st.markdown(f"Calisma sekli: {calisma_sekli}.")
   if nitelikler:
-    st.write(f"Aranan nitelikler:")
+    st.markdown(f"Aranan nitelikler:")
     for nitelik in nitelikler:
-      st.write(f"\t{nitelik}")
+      st.markdown(f"\t{nitelik}")
   if sorumluluklar:
-    st.write(f"Is sorumluluklari: {sorumluluklar}.")
+    st.markdown(f"Is sorumluluklari: {sorumluluklar}.")
     for sorumluluk in sorumluluklar:
-      st.write(f"\t{sorumluluk}")
+      st.markdown(f"\t{sorumluluk}")
   if iletisim:
-    st.write(f"Iletisim: {iletisim}.")
+    st.markdown(f"Iletisim: {iletisim}.")
   if son_basvuru_tarihi:
-    st.write(f"Son basvuru tarihi: {son_basvuru_tarihi}.")
+    st.markdown(f"Son basvuru tarihi: {son_basvuru_tarihi}.")
 
   return "Islem basarili"
 
@@ -209,6 +209,7 @@ def main():
         st.session_state.mesajlar = [
         {"role": "system", "content": """
         Verilen is ilanlari ile ilgili yardimci bir asistansin.
+        Eger kullanici fonksiyon secilmesini gerektirmeyen bir prompt yazarsa, normal cevap ver, fonksiyon secme.
         Is ilanlari ile ilgili elde edilen sonuclari yapilandirilmis formatta, yani alt alta belirli kategorilere gore markdown formatinda yazdir.
         Islem basarili ifadesi, istenen ilanla ilgili sonnucun ekrana basarili bir sekilde yazdirildigi anlamina gelir.
         """}
