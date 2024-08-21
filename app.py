@@ -72,31 +72,37 @@ def is_ilanlarini_filtrele(**kwargs):
   sorumluluklar = kwargs.get('sorumluluklar', None)
   iletisim = kwargs.get('iletisim', None)
   son_basvuru_tarihi = kwargs.get('son_basvuru_tarihi', None)
-
+  yazdirilacak_cikti = ""
+    
   if dosya_adi:
-    st.markdown(f"Ilanin bulundugu dosya ismi: {dosya_adi}.")
+    yazdirilacak_cikti += f"Ilanin bulundugu dosya ismi: {dosya_adi}.\n\n"
   if ilan_basligi:
-    st.markdown(f"*{ilan_basligi}*")
+    yazdirilacak_cikti += f"*{ilan_basligi}*\n\n"
   if sirket_adi:
-    st.markdown(f"**Ilani veren sirket: {sirket_adi}.**")
+    yazdirilacak_cikti += f"**Ilani veren sirket: {sirket_adi}.**\n\n"
   if konum:
-    st.markdown(f"Is konumu: {konum}.")
+    yazdirilacak_cikti += f"Is konumu: {konum}.\n\n"
   if maas:
-    st.markdown(f"Maas: {maas}.")
+    yazdirilacak_cikti += f"Maas: {maas}.\n\n"
   if calisma_sekli:
-    st.markdown(f"Calisma sekli: {calisma_sekli}.")
+    yazdirilacak_cikti += f"Calisma sekli: {calisma_sekli}.\n\n"
   if nitelikler:
-    st.markdown(f"Aranan nitelikler:")
+    yazdirilacak_cikti += f"Aranan nitelikler:\n"
     for nitelik in nitelikler:
-      st.markdown(f"\t{nitelik}")
+      yazdirilacak_cikti += f"\t{nitelik}\n"
   if sorumluluklar:
-    st.markdown(f"Is sorumluluklari: {sorumluluklar}.")
+    yazdirilacak_cikti += f"Is sorumluluklari: {sorumluluklar}.\n"
     for sorumluluk in sorumluluklar:
-      st.markdown(f"\t{sorumluluk}")
+      yazdirilacak_cikti += f"\t{sorumluluk}\n"
   if iletisim:
-    st.markdown(f"Iletisim: {iletisim}.")
+    yazdirilacak_cikti += f"Iletisim: {iletisim}.\n\n"
   if son_basvuru_tarihi:
-    st.markdown(f"Son basvuru tarihi: {son_basvuru_tarihi}.")
+    yazdirilacak_cikti += f"Son basvuru tarihi: {son_basvuru_tarihi}.\n\n"
+
+  if st.session_state.stream:
+      stream_text(yazdirilacak_cikti)
+  else:
+      st.markdown(yazdirilacak_cikti)
 
   return "Islem basarili"
 
