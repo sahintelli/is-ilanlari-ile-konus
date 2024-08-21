@@ -107,28 +107,43 @@ def is_ilanlarini_filtrele(**kwargs):
   return "Islem basarili"
 
 def handle_tool_calls(fonksiyonlarim):
-  completion = istek_gonder()
-  tool_calls = completion.choices[0].message.tool_calls
-  # st.write(f"AI (tool_calls): {tool_calls}")
-  if tool_calls:
-    fonksiyon_sayisi = len(tool_calls)
-    # mesajlar.append(completion.choices[0].message)
-    st.session_state.mesajlar.append({"role": "assistant", "tool_calls": completion.choices[0].message.tool_calls})
-    for i in range(fonksiyon_sayisi):
-      f_id = completion.choices[0].message.tool_calls[i].id
-      f_ismi = completion.choices[0].message.tool_calls[i].function.name
-      f_args = json.loads(completion.choices[0].message.tool_calls[i].function.arguments)
-      # results = completion.choices[0].message.tool_calls[i].function.arguments
-      results = json.dumps(fonksiyonlarim[f_ismi](**f_args))
-      st.sidebar.write(f"Fonksiyon id: {f_id} - isim: {f_ismi} - parametreler: {f_args} - sonuc: {results}")
-      st.session_state.mesajlar.append({
-          "role": "tool",
-          "tool_call_id": f_id,
-          "name": f_ismi,
-          "content": results
-      })
-    return handle_tool_calls(fonksiyonlarim)
-  return completion.choices[0].message.content
+    try:
+      completion = istek_gonder()
+      tool_calls = completion.choices[0].message.tool_calls
+      # st.write(f"AI (tool_calls): {tool_calls}")
+      if tool_calls:
+        fonksiyon_sayisi = len(tool_calls)
+        # mesajlar.append(completion.choices[0].message)
+        st.session_state.mesajlar.append({"role": "assistant", "tool_calls": completion.choices[0].message.tool_calls})
+        for i in range(fonksiyon_sayisi):
+          f_id = completion.choices[0].message.tool_calls[i].id
+          f_ismi = completion.choices[0].message.tool_calls[i].function.name
+          f_args = json.loads(completion.choices[0].message.tool_calls[i].function.arguments)
+          # results = completion.choices[0].message.tool_calls[i].function.arguments
+          results = json.dumps(fonksiyonlarim[f_ismi](**f_args))
+          st.sidebar.write(f"Fonksiyon id: {f_id} - isim: {f_ismi} - parametreler: {f_args} - sonuc: {results}")
+          st.session_state.mesajlar.append({
+              "role": "tool",
+              "tool_call_id": f_id,
+              "name": f_ismi,
+              "content": results
+          })
+        return handle_tool_calls(fonksiyonlarim)
+      return completion.choices[0].message.content
+
+    except openai.APIConnectionError as e:
+        st.error(f"API Connection Error: {e}")
+    except openai.AuthenticationError as e:
+        st.error(f"Authentication Error: {e}")
+    except openai.RateLimitError as e:
+        error_message = e.body.get('message', 'No message provided')
+        st.error(f"Rate Limit Error: Request exceeded the token limit for the selected model on tokens per minute (TPM). The input or output tokens must be reduced in order to run successfully. Visit the rate limits page on the OpenAI platform to learn more.")
+    except openai.APIError as e:
+        st.error(f"API Error: {e}")
+    except openai.OpenAIError as e:
+        st.error(f"OpenAI Error: {e}")
+    except Exception as e:
+        st.error(f"An unexpected error occurred: {e}")
 
 def oku(dosya):
   dosya_yolu = dosya.name
