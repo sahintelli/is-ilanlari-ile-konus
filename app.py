@@ -196,7 +196,7 @@ def stream_text(text):
     while i<=len(text):
         i += n_of_tokens
         yer_tutucu.markdown(text[:i])
-        time.sleep(0.5)
+        time.sleep(0.05)
 
 def main():
     st.title("Title 🎈")  # Set the app's title
