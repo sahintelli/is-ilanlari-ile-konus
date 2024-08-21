@@ -3,6 +3,8 @@ from openai import OpenAI
 import json
 from docx import Document
 from PyPDF2 import PdfReader
+import random
+import time
 
 # Set page configuration
 st.set_page_config(page_title="Is ilanlari ile konusma uygulamasi", page_icon="🤖")  # Appears on the browser tab
@@ -187,12 +189,22 @@ def tools_olusturucu(secilen_kategoriler):
     ]
     return tools
 
+def stream_text(text):
+    yer_tutucu = st.empty()
+    n_of_tokens = random.choice([2,3,4,5])
+    i = 0
+    while i<=len(text):
+        i += n_of_tokens
+        yer_tutucu.markdown(text[:i])
+        time.sleep(0.5)
+
 def main():
     st.title("Title 🎈")  # Set the app's title
 
     # Setup the sidebar
     model, stream, secilen_kategoriler, api_key, uploaded_files = sidebar_setup()
     tools = tools_olusturucu(secilen_kategoriler)
+    st.session_state.stream = stream
     st.session_state.tools = tools
     st.session_state.tool_choice = "auto"
     fonksiyonlarim = {
@@ -245,7 +257,10 @@ def main():
                 if st.session_state.mesajlar[-2]["role"] == "tool":
                     pass
                 else:
-                    st.markdown(cevap)
+                    if st.session_state.stream:
+                        stream_text(cevap)
+                    else:
+                        st.markdown(cevap)
 
 
     st.sidebar.header("Chat gecmisi")
